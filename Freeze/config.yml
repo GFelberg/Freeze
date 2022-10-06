@@ -1,0 +1,54 @@
+# Plugin developed by GFelberg 
+# Config.yml		        
+
+# language: en
+# Thanks for downloading my plugin. For more plugins, dont forget to look my updates!
+# If you find any bugs or ideas to the plugin, pm me at spigot.
+
+# language: br/pt
+# Obrigado por baixar meu plugin. Para mais plugins, não esqueça de olhar as atualizações!
+# Se você encontrar algum problema ou ter alguma ideia para o plugin, pm no spigot.
+
+# Permissions
+
+# freeze.admin : Access to Enable and Disable the Freeze Command and the Help Page
+# freeze.notify : Access to recieves notifications related to a frozen player online in the Server
+# freeze.reload : Access to Reload the Plugin
+
+# Configuration 1.0
+# This configuration will display the Freeze Messages
+
+Freeze:
+  Prefix: '&b&l[&eFreeze&b&l]&r'
+  Enabled: '&6You are now &cfrozen!'
+  Disabled: '&6You are now &cunfrozen!'
+  AdminOn: '&eThe player has been frozen'
+  AdminOff: '&eThe player has been unfrozen'
+  AlreadyFrozen: '&cThe player is already frozen!'
+  AlreadyUnfrozen: '&cThe player is not frozen!'
+  PlayerNotFound: '&cThe player is offline!'
+
+# Configuration 1.1
+# This configuration will display the Help Page Messages
+
+Help:
+  Page: '&eShows this page'
+  FreezePlayer: '&eFreezes the player'
+  UnfreezePlayer: '&eUnfreezes the player'
+  Reload: '&eReloads the Plugin'
+
+# Configuration 1.2
+# This configuration will display the Extra Events while frozen  
+ 
+# DropItem : The player can drop items from his inventory 
+# PickupItem : The player can pickup items from the ground to your inventory
+# PlayerDamage : The player recieves damage from other playes and vice versa  
+# BreakBlocks : The player can break any block in his range
+
+# If true, the events above will be blocked. If false, the events above will work normally. 
+  
+Block:
+  DropItem: true
+  PickupItem: true
+  PlayerDamage: true
+  BreakBlocks: true

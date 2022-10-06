@@ -1,0 +1,9 @@
+name: Freeze
+version: 1.0
+author: GFelberg
+main: me.GFelberg.Freeze.Main
+commands:
+  freeze:
+    usage: /<command>
+  unfreeze:
+    usage: /<command>
