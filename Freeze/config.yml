@@ -12,7 +12,7 @@
 # Permissions
 
 # freeze.admin : Access to Enable and Disable the Freeze Command and the Help Page
-# freeze.notify : Access to recieves notifications related to a frozen player online in the Server
+# freeze.notify : Access to recieves notifications related to a frozen player
 # freeze.reload : Access to Reload the Plugin
 
 # Configuration 1.0
@@ -38,17 +38,31 @@ Help:
   Reload: '&eReloads the Plugin'
 
 # Configuration 1.2
+# This configuration will display the Notification Option
+
+# If true, when a frozen player joins or leaves the server, the operators and players which contains the "freeze.notify" permission
+# will recieve a notification about the frozen player
+
+NotifyOperators: true
+
+# Configuration 1.3
 # This configuration will display the Extra Events while frozen  
  
 # DropItem : The player can drop items from his inventory 
 # PickupItem : The player can pickup items from the ground to your inventory
 # PlayerDamage : The player recieves damage from other playes and vice versa  
 # BreakBlocks : The player can break any block in his range
+# PlaceBlocks : The player can place any block in his range
+# EntityPlaceBlocks : The player can place special blocks, like armor stands, boats, minecarts, and end crystals
+# MultiPlaceBlocks : The player can place special blocks, like a bed
 
-# If true, the events above will be blocked. If false, the events above will work normally. 
+# ATTENTION!!! If true, the events above will be blocked. If false, the events above will work normally. 
   
 Block:
   DropItem: true
   PickupItem: true
   PlayerDamage: true
   BreakBlocks: true
+  PlaceBlocks: true
+  EntityPlaceBlocks: true
+  MultiPlaceBlocks: true

@@ -6,20 +6,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.GFelberg.Freeze.commands.Freeze;
 import me.GFelberg.Freeze.commands.Unfreeze;
-import me.GFelberg.Freeze.data.FreezeManager;
+import me.GFelberg.Freeze.data.FreezeConfig;
 import me.GFelberg.Freeze.events.DamageEvents;
 import me.GFelberg.Freeze.events.PlayerEvents;
 import me.GFelberg.Freeze.utils.FreezeUtils;
 
 public class Main extends JavaPlugin {
 
-	public static FreezeManager data;
 	private static Main instance;
 
 	public void onEnable() {
 		instance = this;
 		saveDefaultConfig();
-		loadFreezeManager();
+		loadFreezeConfig();
 		loadPlayers();
 		loadCommands();
 		loadEvents();
@@ -41,11 +40,10 @@ public class Main extends JavaPlugin {
 		Bukkit.getConsoleSender().sendMessage("----------------------------");
 	}
 
-	public void loadFreezeManager() {
-		data = new FreezeManager();
-		data.setup();
-		data.savePlayers();
-		data.reloadPlayers();
+	public void loadFreezeConfig() {
+		FreezeConfig.setupConfig();
+		FreezeConfig.getConfig().options().copyDefaults(true);
+		FreezeConfig.saveConfig();
 	}
 
 	public void loadCommands() {
@@ -60,7 +58,7 @@ public class Main extends JavaPlugin {
 
 	public void loadPlayers() {
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			if (data.playerscfg.contains("FrozenPlayers." + "UUID." + p.getUniqueId().toString())) {
+			if (FreezeConfig.getConfig().contains("FrozenPlayers." + p.getUniqueId().toString())) {
 				FreezeUtils.players.add(p.getUniqueId());
 			}
 		}

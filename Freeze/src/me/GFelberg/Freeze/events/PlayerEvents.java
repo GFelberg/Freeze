@@ -7,13 +7,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockMultiPlaceEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.EntityPlaceEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import me.GFelberg.Freeze.Main;
+import me.GFelberg.Freeze.data.FreezeConfig;
 import me.GFelberg.Freeze.utils.FreezeUtils;
 
 public class PlayerEvents implements Listener {
@@ -22,19 +26,22 @@ public class PlayerEvents implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 
 		Player p = event.getPlayer();
-		FileConfiguration config = Main.data.playerscfg;
+		FileConfiguration custom = FreezeConfig.getConfig();
+		FileConfiguration config = Main.getInstance().getConfig();
 
-		if (!(config.contains("FrozenPlayers." + "UUID." + p.getUniqueId().toString()))) {
+		if (!(custom.contains("FrozenPlayers." + p.getUniqueId().toString()))) {
 			return;
 		} else {
-			for (Player operator : Bukkit.getServer().getOnlinePlayers()) {
-				if (operator.isOp() || operator.hasPermission("freeze.notify")) {
-					String msg = ChatColor.WHITE + "----------------------------";
-					String msg2 = ChatColor.RED + "A frozen player is online:";
-					String msg3 = ChatColor.RED + "UUID: " + ChatColor.YELLOW + p.getUniqueId();
-					String msg4 = ChatColor.RED + "Name: " + ChatColor.YELLOW + p.getName();
-					String msg5 = ChatColor.WHITE + "----------------------------";
-					operator.sendMessage(msg + "\n" + msg2 + "\n" + msg3 + "\n" + msg4 + "\n" + msg5);
+			if (config.getBoolean("NotifyOperators")) {
+				for (Player operator : Bukkit.getServer().getOnlinePlayers()) {
+					if (operator.isOp() || operator.hasPermission("freeze.notify")) {
+						String msg = ChatColor.WHITE + "----------------------------";
+						String msg2 = ChatColor.RED + "A frozen player is online:";
+						String msg3 = ChatColor.RED + "UUID: " + ChatColor.YELLOW + p.getUniqueId();
+						String msg4 = ChatColor.RED + "Name: " + ChatColor.YELLOW + p.getName();
+						String msg5 = ChatColor.WHITE + "----------------------------";
+						operator.sendMessage(msg + "\n" + msg2 + "\n" + msg3 + "\n" + msg4 + "\n" + msg5);
+					}
 				}
 			}
 			FreezeUtils.players.add(p.getUniqueId());
@@ -45,18 +52,21 @@ public class PlayerEvents implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 
 		Player p = event.getPlayer();
+		FileConfiguration config = Main.getInstance().getConfig();
 
 		if (!(FreezeUtils.players.contains(p.getUniqueId()))) {
 			return;
 		} else {
-			for (Player operator : Bukkit.getServer().getOnlinePlayers()) {
-				if (operator.isOp() || operator.hasPermission("freeze.notify")) {
-					String msg = ChatColor.WHITE + "----------------------------";
-					String msg2 = ChatColor.RED + "A frozen player is now offline:";
-					String msg3 = ChatColor.RED + "UUID: " + ChatColor.YELLOW + p.getUniqueId();
-					String msg4 = ChatColor.RED + "Name: " + ChatColor.YELLOW + p.getName();
-					String msg5 = ChatColor.WHITE + "----------------------------";
-					operator.sendMessage(msg + "\n" + msg2 + "\n" + msg3 + "\n" + msg4 + "\n" + msg5);
+			if (config.getBoolean("NotifyOperators")) {
+				for (Player operator : Bukkit.getServer().getOnlinePlayers()) {
+					if (operator.isOp() || operator.hasPermission("freeze.notify")) {
+						String msg = ChatColor.WHITE + "----------------------------";
+						String msg2 = ChatColor.RED + "A frozen player is now offline:";
+						String msg3 = ChatColor.RED + "UUID: " + ChatColor.YELLOW + p.getUniqueId();
+						String msg4 = ChatColor.RED + "Name: " + ChatColor.YELLOW + p.getName();
+						String msg5 = ChatColor.WHITE + "----------------------------";
+						operator.sendMessage(msg + "\n" + msg2 + "\n" + msg3 + "\n" + msg4 + "\n" + msg5);
+					}
 				}
 			}
 			FreezeUtils.players.remove(p.getUniqueId());
@@ -126,6 +136,57 @@ public class PlayerEvents implements Listener {
 
 		if (FreezeUtils.players.contains(p.getUniqueId())) {
 			if (config.getBoolean("Block.BreakBlocks")) {
+				event.setCancelled(true);
+			}
+		}
+	}
+
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+
+		Player p = event.getPlayer();
+		FileConfiguration config = Main.getInstance().getConfig();
+
+		if (!(FreezeUtils.players.contains(p.getUniqueId()))) {
+			return;
+		}
+
+		if (FreezeUtils.players.contains(p.getUniqueId())) {
+			if (config.getBoolean("Block.PlaceBlocks")) {
+				event.setCancelled(true);
+			}
+		}
+	}
+
+	@EventHandler
+	public void onEntityPlace(EntityPlaceEvent event) {
+
+		Player p = event.getPlayer();
+		FileConfiguration config = Main.getInstance().getConfig();
+
+		if (!(FreezeUtils.players.contains(p.getUniqueId()))) {
+			return;
+		}
+
+		if (FreezeUtils.players.contains(p.getUniqueId())) {
+			if (config.getBoolean("Block.EntityPlaceBlocks")) {
+				event.setCancelled(true);
+			}
+		}
+	}
+
+	@EventHandler
+	public void onBlockMultiPlaceEntity(BlockMultiPlaceEvent event) {
+
+		Player p = event.getPlayer();
+		FileConfiguration config = Main.getInstance().getConfig();
+
+		if (!(FreezeUtils.players.contains(p.getUniqueId()))) {
+			return;
+		}
+
+		if (FreezeUtils.players.contains(p.getUniqueId())) {
+			if (config.getBoolean("Block.MultiPlaceBlocks")) {
 				event.setCancelled(true);
 			}
 		}

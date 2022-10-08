@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import me.GFelberg.Freeze.Main;
+import me.GFelberg.Freeze.data.FreezeConfig;
 
 public class FreezeUtils {
 
@@ -35,6 +36,7 @@ public class FreezeUtils {
 		} else {
 			Main.getInstance().reloadConfig();
 			loadVariables();
+			FreezeConfig.reloadConfig();
 			p.sendMessage(prefix + " " + ChatColor.GREEN + "Plugin reloaded successfully!");
 			Bukkit.getConsoleSender().sendMessage("========================================");
 			Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Freeze Plugin reloaded");
@@ -63,12 +65,12 @@ public class FreezeUtils {
 			return;
 		}
 
-		FileConfiguration config = Main.data.playerscfg;
+		FileConfiguration custom = FreezeConfig.getConfig();
 
 		if (!(players.contains(selected.getUniqueId()))) {
-			config.set("FrozenPlayers." + "UUID." + selected.getUniqueId().toString(), selected.getName());
-			Main.data.savePlayers();
-			Main.data.reloadPlayers();
+			custom.set("FrozenPlayers." + selected.getUniqueId().toString() + ".Name", selected.getName());
+			FreezeConfig.saveConfig();
+			FreezeConfig.reloadConfig();
 			players.add(selected.getUniqueId());
 			selected.sendMessage(freezeon);
 			p.sendMessage(freezeonadmin);
@@ -84,12 +86,12 @@ public class FreezeUtils {
 			return;
 		}
 
-		FileConfiguration config = Main.data.playerscfg;
+		FileConfiguration config = FreezeConfig.getConfig();
 
 		if (players.contains(selected.getUniqueId())) {
-			config.set("FrozenPlayers." + "UUID." + selected.getUniqueId().toString(), null);
-			Main.data.savePlayers();
-			Main.data.reloadPlayers();
+			config.set("FrozenPlayers." + selected.getUniqueId().toString(), null);
+			FreezeConfig.saveConfig();
+			FreezeConfig.reloadConfig();
 			players.remove(selected.getUniqueId());
 			selected.sendMessage(freezeoff);
 			p.sendMessage(freezeoffadmin);
